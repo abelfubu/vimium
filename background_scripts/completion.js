@@ -74,7 +74,7 @@ class Suggestion {
     if (this.insertText && this.isCustomSearch) {
       this.title = this.insertText;
     }
-    let faviconHtml = "";
+    let faviconHtml = `<div class="vomnibarIcon"></div>`;
     if (this.description === "tab" && !BgUtils.isFirefox()) {
       const faviconUrl = new URL(chrome.runtime.getURL("/_favicon/"));
       faviconUrl.searchParams.set("pageUrl", this.url);
@@ -85,7 +85,8 @@ class Suggestion {
     if (this.isCustomSearch) {
       this.html = `\
 <div class="vomnibarTopHalf">
-   <span class="vomnibarSource ${insertTextClass}">${insertTextIndicator}</span><span class="vomnibarSource">${this.description}</span>
+   <span class="vomnibarSource ${insertTextClass}">${insertTextIndicator}</span>
+   <span class="vomnibarSource" data-icon="${this.description}"></span>
    <span class="vomnibarTitle">${this.highlightQueryTerms(Utils.escapeHtml(this.title))}</span>
    ${relevancyHtml}
  </div>\
@@ -93,13 +94,16 @@ class Suggestion {
     } else {
       this.html = `\
 <div class="vomnibarTopHalf">
-   <span class="vomnibarSource ${insertTextClass}">${insertTextIndicator}</span><span class="vomnibarSource">${this.description}</span>
+   <span class="vomnibarSource ${insertTextClass}">${insertTextIndicator}</span>
+   <span class="vomnibarSource" data-icon="${this.description}"></span>
    <span class="vomnibarTitle">${this.highlightQueryTerms(Utils.escapeHtml(this.title))}</span>
  </div>
  <div class="vomnibarBottomHalf">
-  <span class="vomnibarSource vomnibarNoInsertText">${insertTextIndicator}</span>${faviconHtml}<span class="vomnibarUrl">${
-        this.highlightQueryTerms(Utils.escapeHtml(this.shortenUrl()))
-      }</span>
+  <span class="vomnibarSource vomnibarNoInsertText">${insertTextIndicator}</span>
+  ${faviconHtml}
+  <span class="vomnibarUrl">
+    ${this.highlightQueryTerms(Utils.escapeHtml(this.shortenUrl()))}
+  </span>
   ${relevancyHtml}
 </div>\
 `;
@@ -415,6 +419,7 @@ class DomainCompleter {
     const result = new Suggestion({
       queryTerms,
       description: "domain",
+      title: query,
       // This should be the URL or the domain, or an empty string, but not null.
       url: domainsAndScores[0]?.[0] || "",
       relevancy: 2.0,
