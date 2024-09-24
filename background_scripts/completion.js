@@ -82,11 +82,12 @@ class Suggestion {
       const src = this.favIconUrl?.startsWith("http") ? this.favIconUrl : faviconUrl.toString();
       faviconHtml = `<img class="vomnibarIcon" src="${src}" />`;
     }
+ 
     if (this.isCustomSearch) {
       this.html = `\
 <div class="vomnibarTopHalf">
    <span class="vomnibarSource ${insertTextClass}">${insertTextIndicator}</span>
-   <span class="vomnibarSource" data-icon="${this.description}"></span>
+   <span class="vomnibarSource">${this.description}</span>
    <span class="vomnibarTitle">${this.highlightQueryTerms(Utils.escapeHtml(this.title))}</span>
    ${relevancyHtml}
  </div>\

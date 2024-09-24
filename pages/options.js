@@ -16,6 +16,7 @@ const options = {
   searchEngines: "string",
   settingsVersion: "string", // This is a hidden field.
   userDefinedLinkHintCss: "string",
+  remoteConfig: "string",
 };
 
 const OptionsPage = {
